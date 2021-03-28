@@ -1,0 +1,27 @@
+﻿@model Student
+@{
+    var photoPath = "/Images/" + (Model.ImageUrl ?? "NoImg.jpg");
+}
+<br />
+<div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6 row-justify-content-center">
+        <div class="card">
+            <div class="card-header">
+                <h1>@Model.StudentName</h1>
+            </div>
+            <div class="card-body text-center">
+                <img class="card-img-top imageThumbnail" src="@photoPath" asp-append-version="true" />
+                <h4>Student Id: @Model.Id</h4>
+                <h4>Email: @Model.Email</h4>
+                <h4>Course: @Model.Course</h4>
+            </div>
+            <div class="card-footer text-center">
+                <a asp-controller="Student" asp-action="Index" class="btn btn-primary" style="width:150px">Back to Index</a>
+                <a href="#" class="btn btn-primary">Edit</a>
+                <a href="#" class="btn btn-primary">Delete</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3"></div>
+</div>

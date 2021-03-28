@@ -1,0 +1,59 @@
+﻿@*@model IEnumerable<Student>*@
+@model PagedList.IPagedList<Student>
+@{
+    ViewBag.Title = "Student List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<br />
+<br />
+<div class="" style="padding-left:150px;padding-right:150px;">
+    <p class="text-right">
+        Find By Name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" class="btn-info" />
+    </p>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>ID</th>
+            @*@Html.ActionLink("Student Name", "Index", new { sortField = "StudentName", currentSortField = ViewBag.SortField, currentSortOrder = ViewBag.SortOrder })*@
+            <th>Student Name</th>
+            <th>Email Address</th>
+            <th>Date of Birth</th>
+            <th>Course Fee</th>
+            <th>Course Name</th>
+            <th>Picture</th>
+            <th>Action...</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            var photoPath = "/Images/" + (item.ImageUrl ?? "NoImg.jpg");
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.StudentName</td>
+                <td>@item.Email</td>
+                <td asp-format="{0:dd/MM/yyyy}">@item.DateOfBirth</td>
+                <td>@item.CourseFee</td>
+                <td>@item.Course</td>
+                <td><img class="card-img-top imageThumbnail" src="@photoPath" asp-append-version="true" style="width:50px;height:50px" /></td>
+                <td>
+                    <form asp-action="DeleteStudent" asp-route-id="@item.Id" method="post">
+                        <a asp-controller="Student" asp-action="Details"
+                           asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+                        <a asp-controller="Student" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success">Edit</a>
+                        <button type="submit" class="btn btn-danger"
+                                onclick="return confirm('Are you sure that you wnat to delete this record of:@item.StudentName')">
+                            Delete
+                        </button>
+                    </form>
+
+                </td>
+              
+            </tr>
+        }
+
+    </table>
+    Page @(Model.PageCount<Model.PageNumber?0:Model.PageNumber) Of @Model.PageCount
+    @*@Html.PagedListPager(Model, page => Url.Action("Index",*@
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>
+
